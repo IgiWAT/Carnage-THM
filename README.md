@@ -76,3 +76,25 @@ SHA-256: 2EA1B06DE7BC93F2165DB2AC29A9C964716F17415472497B31BE4062BB639240
 ```
 
 [Wyszukanie w VirusTotal](https://www.virustotal.com/gui/file/2ea1b06de7bc93f2165db2ac29a9c964716f17415472497b31be4062bb639240)
+
+W analizie od VirusTotal w sekcji **Contacted Domains** możemy znaleźć również odpowiedź na pytanie nr 5.
+
+![](/img/odp/4.png)
+
+5 *Malicious files were downloaded to the victim host from multiple domains. What were the three domains involved with this activity?* - *finejewels.com.au, new.americold.com, thietbiagt.com*
+
+### Analiza ruchu w Wiresharku
+
+Plik podstawowy rodzieliłem na dwa:
+* `malicious_file_download_traffic.pcap` - plik zawierający komunikację między IP 10.9.23.102(maszyna Erica), a IP 85.187.128.24(serwer z którego pobrano złośliwy plik .xls). Ten plik nam się na razie nie przyda.
+
+* `eric_and_c2_server_comms.pcap` - plik zawierający komunikację między IP 10.9.23.102(maszyna Erica), a IP 185.106.96.158, z którym komunikację nawiązało makro po uruchomieniu pliku .xls. Ten plik jest teraz dla nas kluczowy ponieważ będziemy analizować wszystkie połączenia i dane jakie wymieniły między sobą maszyny.
+
+
+![](/img/ss/5.png)
+*Zrzut ekranu z pliku eric_and_c2_server_comms.pcap*
+
+Jako pierwsze zapytanie GET(pakier nr 1) widzimy zapytanie o plik `cacerts.crl`. Plik z rozszerzeniem .crl (Certificate Revocation List – lista unieważnionych certyfikatów) to podpisana cyfrowo przez urząd certyfikacji (CA) lista certyfikatów X.509, które zostały unieważnione przed upływem ich terminu ważności (np. z powodu wycieku klucza prywatnego).
+
+6 *Which certificate authority issued the SSL certificate to the first domain from the previous question?* - *verisign*
+
